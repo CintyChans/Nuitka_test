@@ -28,10 +28,11 @@ jobs:
         with:
           script-name: hello_world.py
           module: true
+          onefile: true
 
       # Uploads artifact
       - name: Upload Artifact
         uses: actions/upload-artifact@v3
         with:
           name: exe
-          path: .
+          path: ./bulid
