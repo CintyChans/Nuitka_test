@@ -28,8 +28,9 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt 
     
-      - name: Build Executable
-        run: python Nuitka test.py
+      - uses: Nuitka/Nuitka-Action@v0.4
+        with:
+          script-name: test.py
 
   
       - name: Upload Artifacts
