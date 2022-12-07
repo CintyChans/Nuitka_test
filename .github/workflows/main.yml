@@ -17,11 +17,11 @@ jobs:
       # Check-out repository
       - uses: actions/checkout@v3
 
-      # Setup Python
-      - uses: actions/setup-python@v4
+
+      - name: SetUpPython
+        uses: actions/setup-python@v1
         with:
-          python-version: '3.9.15' # Version range or exact version of a Python version to use, using SemVer's version range syntax
-          architecture: 'x64' # optional x64 or x86. Defaults to x64 if not specified
+          python-version: 3.9.15
 
       # Build python script into a stand-alone exe
       - uses: Nuitka/Nuitka-Action@v0.4
