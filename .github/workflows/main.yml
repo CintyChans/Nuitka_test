@@ -27,7 +27,7 @@ jobs:
       - uses: Nuitka/Nuitka-Action@v0.4
         with:
           script-name: hello_world.py
-          onefile: true
+
 
       # Uploads artifact
       - name: Upload Artifact
