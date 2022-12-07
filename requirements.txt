@@ -1,0 +1,7 @@
+argparse 
+numpy 
+shapely 
+scipy 
+paho_mqtt
+confluent_kafka
+Nuitka
