@@ -29,7 +29,10 @@ jobs:
           pip install -r requirements.txt 
     
       - name: Build Executable
-        run: Nuitka test.py
+        uses: Nuitka/Nuitka-Action@v0.4
+        with:
+          script-name: test.py
+          onefile: true
   
       - name: Upload Artifacts
         uses: actions/upload-artifact@v3
