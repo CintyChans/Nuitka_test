@@ -1,34 +1,44 @@
-name: Package exe with Nuitka - Windows
+name: Python application
 
 on:
   push:
-    branches: [ mASTER ]
+    branches: [ "main" ]
   pull_request:
-    branches: [ mASTER ]
-    
-jobs:
+    branches: [ "main" ]
 
+
+jobs:
   build:
-    # Windows is currently the only platform this action supports
-    runs-on: windows-latest
+    strategy:
+      matrix:
+        os: [macos-latest, ubuntu-latest, windows-latest]
+      
+    runs-on: ${{ matrix.os }}
 
     steps:
+      - uses: actions/checkout@v3
+      - name: Set up Python 3.9.13
+        uses: actions/setup-python@v4
+        with:
+          # Semantic version range syntax or exact version of a Python version
+          python-version: '3.9.13'
+          
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt 
     
-    - uses: actions/checkout@v3
-    - name: Set up Python 3.9
-      uses: actions/setup-python@v3
-      with:
-       python-version: "3.9"
-
-    - name: requirment
-      run: |
-           python -m pip install --upgrade pip
-           pip3 install Nuitka
-           Nuitka hello_world.py
-         
-         # Uploads artifact
-    - name: Upload Artifact
-      uses: actions/upload-artifact@v3
-      with:
-          name: exe
-          path: hello_world.exe
+      - name: Build Executable
+        uses: Nuitka/Nuitka-Action@v0.4
+        with:
+          script-name: test
+          onefile: true
+  
+      - name: Upload Artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: ${{ runner.os }} Build
+          path: |
+            build/*.exe
+            build/*.bin
+            build/*.app/**/*
