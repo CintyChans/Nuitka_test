@@ -27,7 +27,6 @@ jobs:
       - uses: jimkring/python-script-to-exe@v0.2.0
         with:
           script-name: hello_world.py
-          module: true
           onefile: true
 
       # Uploads artifact
@@ -35,4 +34,4 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: exe
-          path: ./build
+          path: 。
