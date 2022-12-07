@@ -2,9 +2,9 @@ name: Package exe with Nuitka - Windows
 
 on:
   push:
-    branches: [ main ]
+    branches: [ mASTER ]
   pull_request:
-    branches: [ main ]
+    branches: [ mASTER ]
     
 jobs:
 
