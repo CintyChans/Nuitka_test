@@ -35,4 +35,4 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: macos-10.15 nuitka
-          path: .
+          path: ./
