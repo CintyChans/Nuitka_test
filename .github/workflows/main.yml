@@ -1,21 +1,45 @@
+name: Python application
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+
+
 jobs:
-  test:
-    name: Test on node ${{ matrix.node_version }} and ${{ matrix.os }}
-    runs-on: ${{ matrix.os }}
+  build:
     strategy:
       matrix:
-        node_version: ['8', '10', '12']
-        os: [ubuntu-latest, windows-latest, macOS-latest]
-
+        os: [macos-10.15]
+      
+    runs-on: ${{ matrix.os }}
+    
     steps:
-    - uses: actions/checkout@v1
-    - name: Use Node.js ${{ matrix.node_version }}
-      uses: actions/setup-node@v1
-      with:
-        node-version: ${{ matrix.node_version }}
+      - name: Check-out repository
+        uses: actions/checkout@v3
 
-    - name: npm install, build and test
-      run: |
-        npm install
-        npm run build --if-present
-        npm test
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.9.13' # Version range or exact version of a Python version to use, using SemVer's version range syntax
+          architecture: 'x64' # optional x64 or x86. Defaults to x64 if not specified
+          cache: 'pip'
+
+            
+      - name: Install Dependencies
+        run: |
+          pip install -r requirements.txt 
+          
+      - name: Build Executable
+        uses: Nuitka/Nuitka-Action@v0.4
+        with:
+          script-name: test.py
+          onefile: true
+  
+      - name: Upload Artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: ${{ runner.os }} nuitka
+          path: ./build
