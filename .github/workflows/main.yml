@@ -11,7 +11,7 @@ jobs:
   build:
     strategy:
       matrix:
-        os: [macos-latest, ubuntu-20.04]
+        os: [windows-latest,ubuntu-20.04,macos-latest]
       
     runs-on: ${{ matrix.os }}
     
@@ -31,17 +31,13 @@ jobs:
       - name: Install Dependencies
         run: |
           pip install -r requirements.txt
+          pip install Nuitka
           
       - name: Build Executable
-        uses: Nuitka/Nuitka-Action@v0.4
-        with:
-          script-name: test.py
-          onefile: true
+        run: Nuitka  --onefile --standalone test.py 
   
       - name: Upload Artifacts
         uses: actions/upload-artifact@v3
         with:
           name: ${{ runner.os }} Build
-          path: |
-            build/*.bin
-            build/*.app/**/*
+          path: .
