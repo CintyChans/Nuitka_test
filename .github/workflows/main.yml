@@ -12,7 +12,7 @@ jobs:
   build:
     strategy:
       matrix:
-        os: [macos-latest]
+        os: [macos-latest,ubuntu-20.04]
       
     runs-on: ${{ matrix.os }}
     
@@ -26,10 +26,14 @@ jobs:
           python-version: '3.9.13' # Version range or exact version of a Python version to use, using SemVer's version range syntax
           architecture: 'x64' # optional x64 or x86. Defaults to x64 if not specified
           cache: 'pip'
-
+      
+      - name: Install dependencies
+         run:|
+           python -m pip install --upgrade pip
+           pip install -r requirements.txt 
             
       - name: Build Executable
-        uses: Nuitka/Nuitka-Action@v0.4
+        uses: jimkring/python-script-to-exe@v0.2.0
         with:
           script-name: test.py
           onefile: true
@@ -38,4 +42,4 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: ${{ runner.os }} nuitka
-          path: .
+          path: ./build
