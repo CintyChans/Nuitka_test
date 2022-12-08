@@ -7,31 +7,42 @@ on:
     branches: [ "main" ]
 
 
+
 jobs:
-
   build:
-    # Windows is currently the only platform this action supports
-    runs-on: ubuntu-latest
-
-    steps:
+    strategy:
+      matrix:
+        os: [macos-latest, ubuntu-20.04, windows-latest]
+      
+    runs-on: ${{ matrix.os }}
     
-      # Check-out repository
-      - uses: actions/checkout@v3
+    steps:
+      - name: Check-out repository
+        uses: actions/checkout@v3
 
-      # Setup Python
-      - uses: actions/setup-python@v4
+      - name: Setup Python
+        uses: actions/setup-python@v4
         with:
           python-version: '3.9.13' # Version range or exact version of a Python version to use, using SemVer's version range syntax
           architecture: 'x64' # optional x64 or x86. Defaults to x64 if not specified
-    
-      - uses: Nuitka/Nuitka-Action@v0.4
+          cache: 'pip'
+
+            
+      - name: Install Dependencies
+        run: |
+          pip install -r requirements.txt 
+          
+      - name: Build Executable
+        uses: Nuitka/Nuitka-Action@v0.4
         with:
-          script-name: hello_world.py
-
-
-      # Uploads artifact
-      - name: Upload Artifact
+          script-name: test.py
+          onefile: true
+  
+      - name: Upload Artifacts
         uses: actions/upload-artifact@v3
         with:
-          name: exe
-          path: .
+          name: ${{ runner.os }} Build
+          path: |
+            build/*.exe
+            build/*.bin
+            build/*.app/**/*
