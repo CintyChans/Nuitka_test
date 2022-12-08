@@ -10,6 +10,7 @@ on:
 
 jobs:
   build:
+      
     runs-on: macos-10.15
     
     steps:
@@ -27,7 +28,6 @@ jobs:
       - name: Install Dependencies
         run: |
           pip install -r requirements.txt 
-          pip install Nuitka
           sudo install nuitka
           nuitka install test.py
   
@@ -35,4 +35,4 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: macos-10.15 nuitka
-          path: ./
+          path: .
