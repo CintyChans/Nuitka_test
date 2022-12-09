@@ -1,4 +1,4 @@
-from shapely.geometry import *
+from shapely.geometry import LineString
 import argparse
 import numpy as np
 import time
@@ -6,6 +6,7 @@ from scipy import constants
 import paho.mqtt.client as mqtt
 import confluent_kafka as kafka
 from threading import Thread
+
 parser = argparse.ArgumentParser(description='Demo of argparse')
 parser.add_argument('--line', type=int, default=1)
 
