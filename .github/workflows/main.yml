@@ -34,7 +34,7 @@ jobs:
           pip install Nuitka
           
       - name: Build Executable
-        run: Nuitka  test.py 
+        run: Nuitka   --standalone  --onefile  --windows-disable-console  test.py 
   
       - name: Upload Artifacts
         uses: actions/upload-artifact@v3
