@@ -11,7 +11,7 @@ jobs:
   build:
     strategy:
       matrix:
-        os: [windows-latest]
+        os: [windows-10]
       
     runs-on: ${{ matrix.os }}
     
@@ -31,13 +31,15 @@ jobs:
       - name: Install Dependencies
         run: |
           pip install -r requirements.txt
-          pip install Nuitka
           
       - name: Build Executable
-        run: Nuitka   --standalone  --windows-disable-console  test.py 
+        uses: Nuitka/Nuitka-Action@v0.4
+        with:
+          script-name: test.py
+          onefile: true
   
       - name: Upload Artifacts
         uses: actions/upload-artifact@v3
         with:
           name: ${{ runner.os }} Build
-          path: .
+          path: build/*.exe
