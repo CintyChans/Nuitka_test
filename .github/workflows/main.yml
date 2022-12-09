@@ -8,12 +8,10 @@ on:
 
 
 jobs:
+
   build:
-    strategy:
-      matrix:
-        os: [windows-10]
-      
-    runs-on: ${{ matrix.os }}
+    # Windows is currently the only platform this action supports
+    runs-on: windows-latest
     
     steps:
       - name: Check-out repository
@@ -33,13 +31,13 @@ jobs:
           pip install -r requirements.txt
           
       - name: Build Executable
-        uses: Nuitka/Nuitka-Action@v0.4
+        uses:  Nuitka/Nuitka-Action@v0.4
         with:
           script-name: test.py
-          onefile: true
+          
   
       - name: Upload Artifacts
         uses: actions/upload-artifact@v3
         with:
-          name: ${{ runner.os }} Build
-          path: build/*.exe
+          name: windows Build
+          path: build/test.exe
