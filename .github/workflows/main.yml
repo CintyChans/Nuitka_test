@@ -33,7 +33,7 @@ jobs:
       - name: Build Executable
         run: |
           pip install Nuitka
-          nuitka --standalone   --plugin-enable=numpy --output-dir=test.py
+          nuitka --standalone --mingw64 --nofollow-imports --show-progress --show-memory --plugin-enable=numpy --output-dir=test.py
   
       - name: Upload Artifacts
         uses: actions/upload-artifact@v3
