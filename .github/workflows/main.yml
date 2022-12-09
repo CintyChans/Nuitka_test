@@ -34,6 +34,7 @@ jobs:
         uses:  Nuitka/Nuitka-Action@v0.4
         with:
           script-name: test.py
+          standalone: true
           
   
       - name: Upload Artifacts
