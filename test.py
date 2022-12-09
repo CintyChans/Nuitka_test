@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 from shapely.geometry import LineString
 import argparse
 import numpy as np
