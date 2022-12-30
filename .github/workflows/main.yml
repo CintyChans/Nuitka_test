@@ -18,17 +18,18 @@ jobs:
     steps:
       - name: Check-out repository
         uses: actions/checkout@v3
-
-      - name: Compress
-        uses: TonyBogdanov/zip@1.0
+        
+      - name: copy file
+        uses: canastro/copy-file-action@master
         with:
-          args: zip -qq -r ./${{ matrix.os }}.zip ./
+          source: .
+          target: ./${{ matrix.os }}
           
       - name: Upload Artifacts
         uses: actions/upload-artifact@v3
         with:
           name: test-${{ matrix.os }}
-          path: .
+          path: ./${{ matrix.os }}
           
       - name: download-artifact   
         uses: actions/download-artifact@v3
