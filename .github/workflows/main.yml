@@ -21,9 +21,10 @@ jobs:
         
       - name: 7z
         uses:  DuckSoft/create-7z-action@v1.0
-        
-      - name: ee
-        run: 7z a package.7z .\* -r -mx=9
+        with:
+          pathSource: ./*
+          pathTarget: ./package.7z
+
           
       - name: Upload Artifacts
         uses: actions/upload-artifact@v3
