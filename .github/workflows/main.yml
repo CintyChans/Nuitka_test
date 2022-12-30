@@ -19,11 +19,10 @@ jobs:
       - name: Check-out repository
         uses: actions/checkout@v3
 
-      - name: zip   
-        uses: vimtor/action-zip@v1
+      - name: Compress
+        uses: TonyBogdanov/zip@1.0
         with:
-          files: ${{ github.workspace }}/*
-          dest:  ${{ runner.os }}_ctest.zip
+          args: zip -qq -r ./${{ matrix.os }}.zip ./
           
       - name: Upload Artifacts
         uses: actions/upload-artifact@v3
