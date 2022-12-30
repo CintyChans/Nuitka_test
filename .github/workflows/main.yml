@@ -11,7 +11,7 @@ jobs:
   build:
     strategy:
       matrix:
-        os: [windows-latest]
+        os: [ubuntu-20.04, macos-10.15, windows-latest]
       
     runs-on: ${{ matrix.os }}
     
@@ -19,23 +19,30 @@ jobs:
       - name: Check-out repository
         uses: actions/checkout@v3
 
-      - name: Setup Python
-        uses: actions/setup-python@v4
+      - name: zip   
+        uses: vimtor/action-zip@v1
         with:
-          python-version: '3.9.13' # Version range or exact version of a Python version to use, using SemVer's version range syntax
-          architecture: 'x64' # optional x64 or x86. Defaults to x64 if not specified
-          cache: 'pip'
-          cache-dependency-path: |
-            **/requirements*.txt
-            
-      - name: Install Dependencies
-        run: |
-          pip install -r requirements.txt 
-
-  
+          files: ${{ github.workspace }}
+          dest:  ${{ github.workspace }}/zip/${{ runner.os }}_ctest.zip
+          
       - name: Upload Artifacts
         uses: actions/upload-artifact@v3
         with:
-          name: ${{ runner.os }} Build
-          path: .
+          name: test-${{ matrix.os }}
+          path: ${{ github.workspace }}/zip/
+          
+      - name: download-artifact   
+        uses: actions/download-artifact@v3
+        with: 
+          path: ./artifact/
+ 
+          
+      - name: Create Release and Upload Release Asset
+        uses: "marvinpinto/action-automatic-releases@latest"
+        with:
+          repo_token: "${{ secrets.GITHUB_TOKEN }}"
+          prerelease: false
+          title: 'v0.0.3'
+          automatic_release_tag: 'v0.0.3'
+          files: ./artifact
            
