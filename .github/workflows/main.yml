@@ -11,7 +11,7 @@ jobs:
   build:
     strategy:
       matrix:
-        os: [ubuntu-20.04, macos-10.15, windows-latest]
+        os: [windows-latest]
       
     runs-on: ${{ matrix.os }}
     
@@ -19,22 +19,22 @@ jobs:
       - name: Check-out repository
         uses: actions/checkout@v3
         
-      - name: copy file
-        uses: canastro/copy-file-action@master
-        with:
-          source: "./"
-          target: "./${{ matrix.os }}"
+      - name: 7z
+        uses:  DuckSoft/create-7z-action@v1.0
+        
+      - name: ee
+        run: 7z a package.7z .\* -r -mx=9
           
       - name: Upload Artifacts
         uses: actions/upload-artifact@v3
         with:
           name: test-${{ matrix.os }}
-          path: ./${{ matrix.os }}
+          path: .
           
-      - name: download-artifact   
-        uses: actions/download-artifact@v3
-        with: 
-          path: ./artifact/
+#       - name: download-artifact   
+#         uses: actions/download-artifact@v3
+#         with: 
+#           path: ./artifact/
  
           
 
