@@ -22,7 +22,7 @@ jobs:
       - name: zip   
         uses: vimtor/action-zip@v1
         with:
-          files: ${{ github.workspace }}
+          files: ${{ github.workspace }}/*
           dest:  ${{ runner.os }}_ctest.zip
           
       - name: Upload Artifacts
