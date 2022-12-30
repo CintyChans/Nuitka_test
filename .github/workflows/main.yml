@@ -23,7 +23,7 @@ jobs:
         uses:  DuckSoft/create-7z-action@v1.0
         with:
           pathSource: ./*
-          pathTarget: ./package.7z
+          pathTarget: ./package.zip
 
           
       - name: Upload Artifacts
