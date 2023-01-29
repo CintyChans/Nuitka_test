@@ -29,10 +29,8 @@ jobs:
           pip install -r requirements.txt 
           python -m grpc_tools.protoc -I. --python_out=. --grpc_python_out=. ./test.proto
             
-      - name: pytest
-        run: |
-          pytest  test_main.py rsion: '3.9.13' # Version range or exact version of a Python version to use, using SemVer's version range syntax
-          nuitka  --standalone --plugin-enable=numpy  --show-progress  test.py --nofollow-imports
+      - name: nuitka
+        run: python -m nuitka  --standalone --plugin-enable=numpy  --show-progress  test.py 
   
       - name: Upload Artifacts
         uses: actions/upload-artifact@v3
