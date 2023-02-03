@@ -33,6 +33,7 @@ jobs:
           script-name: test.py
           onefile: true
           access-token: ${{ secrets.NUITKA_COMMERCIAL_ACCESS_TOKEN }}
+          enable-plugins: numpy
           # macos-create-app-bundle: ${{ runner.os == 'macOS' }}
           
       # Uploads artifacts
