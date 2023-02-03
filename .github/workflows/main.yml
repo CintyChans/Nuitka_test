@@ -28,7 +28,7 @@ jobs:
           pip install -r requirements.txt 
           python -m grpc_tools.protoc -I. --python_out=. --grpc_python_out=. ./test.proto
             
-      - uses: jimkring/python-script-to-exe@v0.2.0
+      - uses: jimkring/python-script-to-exe@v0.4
         with:
           script-name: test.py
           onefile: true
