@@ -12,8 +12,7 @@ jobs:
   build:
     strategy:
       matrix:
-        os: [ubuntu-latest]
-
+        os: [macos-latest, ubuntu-latest, windows-latest]
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v3
@@ -29,14 +28,22 @@ jobs:
           pip install -r requirements.txt 
           python -m grpc_tools.protoc -I. --python_out=. --grpc_python_out=. ./test.proto
             
-      - name: nuitka
-        run: python3 -m nuitka  --standalone --plugin-enable=numpy  --show-progress  test.py 
-  
-      - name: Upload Artifacts
+      - uses: jimkring/python-script-to-exe@v0.2.0
+        with:
+          script-name: test.py
+          onefile: true
+          access-token: ${{ secrets.NUITKA_COMMERCIAL_ACCESS_TOKEN }}
+          # macos-create-app-bundle: ${{ runner.os == 'macOS' }}
+          
+      # Uploads artifacts
+      - name: "Upload Artifacts"
         uses: actions/upload-artifact@v3
         with:
-          name: nuitka
-          path: ./test.dist
+          name: ${{ runner.os }} Build
+          path: |
+            build/*.exe
+            build/*.bin
+            build/*.app/**/*
 
 
            
