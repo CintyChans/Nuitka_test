@@ -12,7 +12,7 @@ jobs:
   build:
     strategy:
       matrix:
-        os: [macos-latest, ubuntu-latest]
+        os: [macos-latest]
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v3
@@ -27,7 +27,7 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt 
           python -m grpc_tools.protoc -I. --python_out=. --grpc_python_out=. ./test.proto
-          python -m nuitka --standalone test.py
+          python -m  nuitka --standalone --assume-yes-for-downloads --nofollow-imports --plugin-enable=numpy --show-progress test.py
             
 
           
