@@ -3,8 +3,7 @@ numpy==1.24.0
 scipy==1.9.3
 paho_mqtt==1.6.1
 confluent_kafka==1.9.2
-nuitka
+nuitka==1.4.2
 protobuf==4.21.12
 grpcio-tools==1.51.1
-shapely==1.8.5
 pytest==7.2.1
