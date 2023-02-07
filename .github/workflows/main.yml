@@ -38,10 +38,15 @@ jobs:
         run: |
           pytest  test_main.py     
 
-
+      - name: libfuse2
+        if: matrix.os=='windows-latest' && github.ref_type=='tag'
+        run: |
+          pip install nuitka==1.4.2
+          
       - name: libfuse2
         if: matrix.os=='ubuntu-latest' && github.ref_type=='tag'
-        run:  sudo apt-get install libfuse2
+        run: |
+          sudo apt-get install libfuse2
         
       - name: nuitka
         if: github.ref_type=='tag'
