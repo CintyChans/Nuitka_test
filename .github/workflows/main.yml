@@ -38,7 +38,7 @@ jobs:
         run: |
           pytest  test_main.py     
 
-      - name: libfuse2
+      - name: windows nuitka update
         if: matrix.os=='windows-latest' && github.ref_type=='tag'
         run: |
           pip install nuitka==1.4.2
