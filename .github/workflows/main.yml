@@ -1,0 +1,82 @@
+
+name: Python application
+
+on:
+  push:
+   branches: ["main"]
+   tags: 
+     - v[0-9]+.[0-9]+
+     - v[0-9]+.[0-9]+.[0-9]+
+     - v[0-9]+.[0-9]+.[0-9]+.[0-9]+
+     
+
+jobs:
+  job1:
+    strategy:
+      matrix:
+        os: [ubuntu-20.04,windows-latest]
+
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v3
+   
+
+      - name: Setup Python
+      
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.9.13'
+
+ 
+      - name: Install Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          python -m grpc_tools.protoc -I. --python_out=. --grpc_python_out=. ./test.proto
+
+      - name: pytest
+        run: |
+          pytest  test_main.py     
+
+
+      - name: nuitka
+        if: github.ref_type=='tag'
+        run: python -m  nuitka  --standalone --onefile --assume-yes-for-downloads --output-dir=build --plugin-enable=numpy --show-progress main.py
+
+      - name: Upload Artifacts
+        if: github.ref_type=='tag' 
+        uses: actions/upload-artifact@v3
+        with:
+          name: test-${{ matrix.os }}
+          path: |
+            build/*.bin
+            build/*.exe
+            build/*.app/**/*
+          
+   
+      - name: download-artifact   
+        if: github.ref_type=='tag' 
+        uses: actions/download-artifact@v3
+        with: 
+          path: ./artifact/
+   
+
+      - name: note
+        if: github.ref_type=='tag' 
+        shell: python 
+        run: |
+          import json;import os;f=open('releasenotes.json',"r");obj=json.load(f);note=[i['notes'] for i in obj['tags_releasenotes'] if i['name']=='${{github.ref_name}}'];f.close();note=[note[0] if note else ''][0];
+          os.system("echo 'NOTE<<EOF' >> $GITHUB_ENV")
+          tmp=[os.system("echo '{}' >> $GITHUB_ENV".format(n)) for n in note]
+          os.system("echo 'EOF' >> $GITHUB_ENV")
+          
+      - name: Create Release
+ 
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: ${{github.ref_name}}
+          name: ${{github.ref_name}}
+          body: ${{env.NOTE}}
+          prerelease: false
+          draft: false
+ 
