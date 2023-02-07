@@ -11,10 +11,10 @@ on:
      
 
 jobs:
-  job1:
+  job:
     strategy:
       matrix:
-        os: [ubuntu-20.04,windows-latest]
+        os: [ubuntu-latest,windows-latest]
 
     runs-on: ${{ matrix.os }}
     steps:
@@ -78,6 +78,6 @@ jobs:
           name: ${{github.ref_name}}
           body: ${{env.NOTE}}
           prerelease: false
-          file: ./artifact/test-${{ matrix.os }}/*
+          files: ./artifact/test-${{ matrix.os }}/*
           draft: false
  
