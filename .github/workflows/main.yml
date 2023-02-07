@@ -17,19 +17,17 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - name: Setup conda
-        uses: s-weigand/setup-conda@v1
+      - name: Set up Python 3.9.13
+        uses: actions/setup-python@v4 
         with:
-          update-conda: true
-          python-version: 3.9.13
+          python-version: '3.9.13'
 
         
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt 
-          conda install shapely==1.8.4
-          conda install libpython-static
+          pip install Shapely-1.8.5-cp39-cp39-manylinux_2_12_x86_64.manylinux2010_x86_64.whl
           python -m grpc_tools.protoc -I. --python_out=. --grpc_python_out=. ./test.proto
           python -m nuitka --standalone --plugin-enable=numpy test.py
           
