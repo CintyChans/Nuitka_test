@@ -26,7 +26,9 @@ jobs:
         
       - name: Install dependencies
         run: |
-          conda install --yes --file requirements.txt 
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt 
+          conda install shapely==1.8.4
           python -m grpc_tools.protoc -I. --python_out=. --grpc_python_out=. ./test.proto
           python -m nuitka --standalone --plugin-enable=numpy test.py
           
