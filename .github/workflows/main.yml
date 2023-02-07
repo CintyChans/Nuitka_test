@@ -71,12 +71,13 @@ jobs:
           os.system("echo 'EOF' >> $GITHUB_ENV")
           
       - name: Create Release
- 
+        if: github.ref_type=='tag' 
         uses: softprops/action-gh-release@v1
         with:
           tag_name: ${{github.ref_name}}
           name: ${{github.ref_name}}
           body: ${{env.NOTE}}
           prerelease: false
+          file: ./artifact/test-${{ matrix.os }}/*
           draft: false
  
